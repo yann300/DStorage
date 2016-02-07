@@ -12,7 +12,7 @@ contract storage_drive
 	function set(bytes _k, bytes _v) 
 	{
 		if (msg.sender != owner)
-			return;
+			throw;
 		insert(st, _k, _v);
 	}
 	
@@ -24,7 +24,7 @@ contract storage_drive
 	function remove(bytes _k)
 	{
 		if (msg.sender != owner)
-			return;
+			throw;
 		remove(st, _k);
 	}
 	

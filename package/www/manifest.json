@@ -1,0 +1,27 @@
+
+{
+	"entries" : 
+	[
+		
+		{
+			"contentType" : "application/javascript",
+			"file" : "forge.bundle.js",
+			"hash" : "7281eff1b1fba652cc06b3ea438ded522bada6f4a699bb587c4aa1ce24f612b5",
+			"path" : "/forge.bundle.js"
+		},
+		
+		{
+			"contentType" : "application/javascript",
+			"file" : "deployment.js",
+			"hash" : "c739ee2cc90bc8b49b3f2f52a57d310bc70df6ae89391db5eb1845a21925e8fe",
+			"path" : "/deployment.js"
+		},
+		
+		{
+			"contentType" : "text/html",
+			"file" : "index.html",
+			"hash" : "f349f30e4b2428e4a6bc44cacb551bea4b560dc7300aae2ff7497d376402bec6",
+			"path" : "/"
+		}
+	]
+}

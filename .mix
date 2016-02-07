@@ -1,13 +1,16 @@
 {
 	"applicationUrlEth": "",
 	"applicationUrlHttp": "",
-	"deployBlockNumber": "1949",
-	"deploymentAddresses": {},
+	"deployBlockNumber": "1938",
+	"deploymentAddresses": {
+		"storage_drive": "0x187d17938926ab5a1c59c881114055474ede9f9d",
+		"<storage_drive - 0>": "0x187d17938926ab5a1c59c881114055474ede9f9d"
+	},
 	"deploymentDir": "",
-	"deploymentTrHashes": "{\"Sample.Sample()\":\"0x8957a29d8c4996321fdfb76b9493c93cf6a4cf0f16988b8abea57a74c8e7540a\",\"<Sample - 0>.set()\":\"0x22efe0ec6ac7e72fce09828ddbeb8c09cb5a4b21913779d93f2a90968bdfded5\"}",
+	"deploymentTrHashes": "{\"storage_drive.storage_drive()\":\"0xd90d9ef4844c8d12f428f1279ed4d905b32951e07b85bb9adfe06fdc855bb61e\"}",
 	"files": [],
-	"lastPackageDate": "2015-12-14T11:53:10",
-	"localPackageUrl": "file:///home/yann/mixproject/iuy/package/package.dapp?hash=3aa1508a0bda2281856eb71da803b5da8f4b4d41c1d5e4c7c6c6f4f41d9c93f4",
+	"lastPackageDate": "2016-02-07T13:06:40",
+	"localPackageUrl": "file:///home/yann/mix/storage/package//www/",
 	"registerContentHashBlockNumber": -1,
 	"registerContentHashTrHash": "",
 	"registerUrlBlockNumber": -1,
