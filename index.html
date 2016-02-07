@@ -1,0 +1,134 @@
+<!doctype>
+<html>
+<head>
+
+<script type='text/javascript' src="forge.bundle.js" > </script>
+<script type='text/javascript'>
+
+	
+String.prototype.getBytes = function() {
+    var bytes = [];
+    for (var i = 0; i < this.length; i++) {
+        var charCode = this.charCodeAt(i);
+        var cLen = Math.ceil(Math.log(charCode)/Math.log(256));
+        for (var j = 0; j < cLen; j++) {
+            bytes.push((charCode << (j*8)) & 0xFF);
+        }
+    }
+    return bytes;
+}
+	
+function get() {
+	var param = document.getElementById('valueGet').value;
+	var data = contracts['storage_drive'].contract.getValue.call(param);
+	if (data == "0x")
+		document.getElementById('queryres').innerText = "<empty>"
+	else
+	{
+		try
+		{
+			value = decrypt(formatPassword(), web3.toAscii(data))
+			if (value !== "")
+				document.getElementById('queryres').innerText = value
+			else
+				document.getElementById('queryres').innerText = "decrytion failed or value empty (check password)"
+		}
+		catch (e)
+		{
+			console.log(e)
+			document.getElementById('queryres').innerText = "decryption failed (check password)"		
+		}
+	}
+}
+
+function set() {
+	var key = document.getElementById('key').value;
+	var value = document.getElementById('value').value;	
+	var sender = document.getElementById('sender').value;	
+	console.log(sender)
+	var res = contracts['storage_drive'].contract.set(key, encrypt(formatPassword(), value, { from: sender }));
+}
+	
+function formatPassword()
+{
+	var pass = document.getElementById('privatekey').value
+	pass = make_password_bytes(pass)
+	return pass
+}
+	
+function encrypt(key, data) {
+    var iv = forge.random.getBytesSync(16);
+    var cipher = forge.cipher.createCipher('AES-CBC', key);
+    cipher.start({iv: iv});
+    cipher.update(forge.util.createBuffer(data));
+    cipher.finish();
+    
+    var encrypted = cipher.output;
+    var data = forge.util.bytesToHex(encrypted);
+    var obj = {'iv': forge.util.bytesToHex(iv), 'encrypted': data};
+    
+    return JSON.stringify(obj); // String rep allows persistence.
+}
+	
+function decrypt(key, encrypted) {
+    var obj = JSON.parse(encrypted);
+    
+    var iv = forge.util.createBuffer();
+    var data = forge.util.createBuffer();
+    iv.putBytes(forge.util.hexToBytes(obj.iv));
+    data.putBytes(forge.util.hexToBytes(obj.encrypted));
+    
+    var decipher = forge.cipher.createDecipher('AES-CBC', key);
+    decipher.start({iv: iv});
+    decipher.update(data);
+    decipher.finish();
+	return decipher.output;
+}
+	
+function make_password_bytes(password) {
+    var bytes = password.getBytes();
+    
+    // Round to the nearest power of 2 larger than the password size and
+    // append bytes from the password. This allows us to regenerate it at
+    // will from the original.
+    var nearest_power_of_2 = Math.pow( 2, Math.ceil( Math.log( bytes.length ) / Math.log( 2 ) ) );
+    if (bytes.length != nearest_power_of_2) {
+        var remainder = nearest_power_of_2 - bytes.length;
+        for(var i=0; i<remainder; i++) {
+            var j = i % bytes.length;
+            bytes.push(bytes[j]);
+        }
+    }
+    return bytes;
+}
+</script>
+</head>
+<body bgcolor='#E6E6FA'>
+	<h1>D-Drive</h1>
+<div>
+User:
+	<br />
+	<input type="text" id='sender'>
+	<br />
+	<br />
+Password:
+	<br />
+	<input type="password" id='privatekey'>
+	<br />
+	<br />
+Store:
+	<br />
+	<input id='key'>
+	<input id='value'>
+	<button onclick='set()'>Save</button>
+</div>
+<div>
+	<br />
+Query:
+	<br />
+	<input id='valueGet'>
+	<input value='get' type='button' id='query' onclick='get()' />
+	<div id='queryres'></div>
+</div>
+</body>
+</html>
